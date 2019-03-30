@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Как безопасно почистить Linux Fedora (Workstation) от лишних файлов без использования BleachBit — Linux заметки — статьи по различным Linux-дистрибутивам</title>
+  <meta name="keywords" content="Linux, GNU, GNU/Linux, Fedora, Линукс, Федора, лишние файлы, мусор, безопасная очистка, BleachBit">
+  <meta name="description" content="Как безопасно почистить Linux Fedora (Workstation) от лишних файлов и освободить дополнительное место на диске. Без использования BleachBit.">
+  <link rel="stylesheet" href="../styles/style.css">
+  <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=cyrillic" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fira+Mono&amp;subset=cyrillic" rel="stylesheet">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <h1 class="home"><a href="../index.html">← Список всех статей</a></h1>
+    </header>
+    <main class="main">
+      <article class="note">
+        <header class="note-header">
+          <h1>Безопасная очистка Linux Fedora от лишних файлов</h1>
+          <time datetime="2019-03-30" pubdate>30 Марта 2019</time>
+        </header>
+        <p>В данной статье мы рассмотрим, как почистить Linux Fedora от лишних файлов. Сразу стоить отметить, что для очистки системы существуют утилиты вроде BleachBit, но при неправильных настройках программы можно убить систему, поэтому данный способ мы не будем использовать. Возможно, в одной из следующих статей я распишу, как правильно пользоваться этой программой, а сейчас мы рассмотрим только безопасные методы.</p>
+        <p>Содержание:</p>
+        <ul>
+          <li><a href="#trash">Очистка корзины</a></li>
+          <li><a href="#browser">Очистка браузера</a></li>
+          <li><a href="#gnome-shell">Удаление ненужных тем, иконок, курсоров и расширений GNOME Shell</a></li>
+          <li><a href="#dnf">Очистка кэша менеджера обновлений</a></li>
+          <li><a href="#thumbnails">Очистка кэша миниатюр</a></li>
+          <li><a href="#kernel">Удаление устаревших версий ядра</a></li>
+          <li><a href="#journal">Сокращение объема файла системного журнала</a></li>
+        </ul>
+        <h2 id="trash">Очистка корзины</h2>
+        <p>Начать стоит с очевидных вещей: не забывайте очищать корзину время от времени, ведь там могут скопиться гигабайты ненужных файлов. Очистить корзину можно через файловый менеджер, обычно пункт "Корзина" расположен в боковой панели, оттуда же её можно и очистить через контекстное меню или открыть её и вручную удалить лишние файлы. А если у вас каким-то чудом нет такого пункта, то попасть в корзину можно по следующему пути с показом скрытых файлов: <span class="monospace">~/.local/share/Trash/files</span>.</p>
+        <h2 id="browser">Очистка браузера</h2>
+        <p>Тоже достаточно очевидный способ, но и его стоить упомянуть. Со временем кэш браузеров начинает занимать много места, да и про лишние расширения тоже забывать не стоит. Вы можете удалить куки, кэш, историю и т.д., зажав в Firefox'е или в Chromium'е <span class="monospace">ctrl+shift+delete</span>:</p>
+        <a href="https://i.ibb.co/NmVSs25/Screenshot-from-2019-03-30-12-44-52.png" target="_blank">
+          <img src="https://i.ibb.co/NmVSs25/Screenshot-from-2019-03-30-12-44-52.png" alt="Удаление данных браузера" border="0">
+        </a>
+        <p>Для удаления расширений в Firefox'e зажимаем <span class="monospace">ctrl+shift+A</span>(англ.) и убираем, что не особо нужно; в Chromium'е для удаления расширений заходим в меню, наводим на пункт "More Tools" и выбираем "Extensions", дальше удаляем лишнее.</p>
+        <a href="https://i.ibb.co/Ht8K6zm/extensions.png" target="_blank">
+          <img src="https://i.ibb.co/Ht8K6zm/extensions.png" alt="Расширения Chromium" border="0">
+        </a>
+        <p>Ещё вы можете полностью удалить все данные, которые браузер создал на вашем устройстве, но перед этим стоить сделать экспорт закладок, если вы не хотите их потерять: в Firefox'e зажимаем <span class="monospace">ctrl+shift+O</span>(англ.), открывем "Import and Backup", выбираем пункт "Backup" и место, куда мы сохраним закладки; в Chromium'е точно такое же сочетание клавиш <span class="monospace">ctrl+shift+O</span>(англ.), но дальше нужно нажать на 3 точки в верхнем правом углу на синей панели и выбрать "Export bookmarks"; позже закладки вы сможете импортировать похожим образом.</p>
+        <a href="https://i.ibb.co/z6HRPv4/bookmarks-chromium.png" target="_blank">
+          <img src="https://i.ibb.co/z6HRPv4/bookmarks-chromium.png" alt="bookmarks-chromium" border="0">
+        </a>
+        <p>Теперь для удаления данных Firefox'а удаляем две папки с помощью терминала:</p>
+        <div class="code">
+            <code>rm -r -v ~/.mozilla && rm -r -v ~/.cache/mozilla</code>
+        </div>
+        <p>А для удаления данных Chromium'а:</p>
+        <div class="code">
+            <code>rm -r -v ~/.cache/chromium && rm -r -v ~/.config/chromium</code>
+        </div>
+        <h2 id="gnome-shell">Удаление ненужных тем, иконок, курсоров и расширений GNOME Shell</h2>
+        <p>Возможно, вы когда-то давно устанавливали много разных тем, иконок, курсоров и расширений, но сейчас никак не используете. Тогда лучше их удалить, чтобы освободить немного места. Темы можно удалить в папке <span class="monospace">~/.themes</span>, иконки и курсоры - в папке ~/.icons, а расширения можно удалить через Центр Приложений или через сайт <a href="https://extensions.gnome.org/local/" target="_blank">GNOME Shell Extensions</a>, но при условии, что у вас стоит расширение <a href="https://addons.mozilla.org/en-US/firefox/addon/gnome-shell-integration" target="_blank">GNOME Shell integration</a> для браузера Firefox.</p>
+        <a href="https://i.ibb.co/dkwXqb7/gnome-shell-extensions.png" target="_blank">
+          <img src="https://i.ibb.co/dkwXqb7/gnome-shell-extensions.png" alt="gnome-shell-extensions" border="0">
+        </a>
+        <p>Также вы можете удалить расширение с помощью терминала, зная его название:</p>
+        <div class="code">
+          <code>sudo dnf remove gnome-shell-extension-disconnect-wifi</code>
+        </div>
+        <h2 id="dnf">Очистка кэша менеджера обновлений</h2>
+        <p>Начнем с менеджера пакетов DNF, который используется для установки обновлений дистрибутива. Для очистки его кэша нужно выполнить в терминале следующую команду:</p>
+        <div class="code">
+          <code>sudo dnf clean all</code>
+        </div>
+        <p>Помимо менеджера пакетов DNF в Fedora для загрузки и установки обновлений используется еще один системный компонент под названием PackageKit, причем он удаляет автоматически лишь те файлы пакетов, обновления из которых были корректно установлены, поэтому со временем в корневом разделе вашей системы может скопиться большое количество ненужных файлов. Для очистки его кэша выполняем:</p>
+        <div class="code">
+          <code>sudo pkcon refresh force</code>
+        </div>
+        <h2 id="thumbnails">Очистка кэша миниатюр</h2>
+        <p>Fedora автоматически генерирует миниатюры для файлов изображений или видео, которые впоследствии используются в файловом менеджере. Сгенерированные миниатюры хранятся в скрытых папках <span class="monospace">~/.cache/thumbnails</span> и <span class="monospace">~/.thumbnails</span>. Со временем общий объем миниатюр может значительно увеличиться, достигнув 512МБ. Более того, у вас могло остаться большое количество миниатюр для уже не существующих файлов. По умолчанию автоматически удаляются лишь те миниатюры, которые были созданы более чем шесть месяцев назад.</p>
+        <p>Самый быстрый способ очистки кэша миниатюр связан с использованием терминала. Выполняем следующуие команды:</p>
+        <div class="code">
+          <code>rm -v -f ~/.cache/thumbnails/*/*.png ~/.thumbnails/*/*.png</code>
+          <code>rm -v -f ~/.cache/thumbnails/*/*/*.png ~/.thumbnails/*/*/*.png</code>
+        </div>
+        <p>Желаете изменить максимальный объем и время хранения миниатюр? Во-первых, придется установить редактор dconf. Для этого необходимо ввести в терминале следующую команду:</p>
+        <div class="code">
+          <code>sudo dnf install dconf-editor</code>
+        </div>
+        <p>Запускаем программу. Сразу же после запуска приложение предупредит вас о необходимости выполнения лишь обдуманных действий; просто нажимаем на единственную доступную кнопку. Теперь, нажимая на папки один раз, переходим в <span class="monospace">org — gnome — desktop — thumbnail-cache</span>.</p>
+        <a href="https://i.ibb.co/bQ12bXj/thumbnails-1.png" target="_blank">
+          <img src="https://i.ibb.co/bQ12bXj/thumbnails-1.png" alt="dconf Editor" border="0">
+        </a>
+        <p>После этого нажимаем на значение параметра "maximum-age", выключаем "Use default value" и вводим в поле ввода "Custom value" значение 30, если вы хотите хранить миниатюры 30 дней.</p>
+        <a href="https://i.ibb.co/F8bMgh7/thumbnails-2.png" target="_blank">
+          <img src="https://i.ibb.co/F8bMgh7/thumbnails-2.png" alt="dconf Editor maximum-age" border="0">
+        </a>
+        <p>Далее нажимаем на строку "thumbnail-cache" в заголовке окна, переходим в значение параметра "maximum-size", выключаем "Use default value" и вводим в поле ввода "Custom value" значение 50, если вы хотите использовать максимальный размер кэша миниатюр, равный 50МБ; конечно, вы можете выставить свои значения.</p>
+        <a href="https://i.ibb.co/rvQJFRS/thumbnails-3.png" target="_blank">
+          <img src="https://i.ibb.co/rvQJFRS/thumbnails-3.png" alt="dconf Editor maximum-size" border="0">
+        </a>
+        <h2 id="kernel">Удаление устаревших версий ядра</h2>
+        <p>В вашей системе могут быть установлены устаревшие версии ядра ОС, которые не используются. В этом случае вы также можете освободить немного дискового пространства. После обновления компонентов системы файлы старой версии ядра ОС остаются в системе, причем запись, соответствующая старой версии ядра ОС присутствует в меню системного загрузчика GRUB. Это объясняется тем, что вам может понадобиться загрузить систему с ядром ОС старой версии из-за того, что ядро новой версии некорректно работает с вашим аппаратным обеспечением. В этом нет ничего плохого. Но для хранения файлов более чем одной версии ядра ОС требуется дополнительное дисковое пространство, ведь общий объем файлов каждой версии ядра ОС превышает 200МБ. По умолчанию количество устаревших версий ядра ОС, хранимых в системе, равно трем, причем для того, чтобы изменить это количество достаточно изменить настройки менеджера пакетов DNF. Как по мне, хватит и двух версий ядра, поэтому открываем файл dnf.conf с помощью любого текстового редактора от имени суперпользователя, я буду использовать <span class="monospace">gedit</span>, набираем в терминале:</p>
+        <div class="code">
+          <code>sudo gedit /etc/dnf/dnf.conf</code>
+        </div>
+        <p>Ищем строку <span class="monospace">installonly_limit</span>, меняем значение <span class="monospace">3</span> на <span class="monospace">2</span> и сохраняем.</p>
+        <a href="https://i.ibb.co/48HqSnZ/kernel.png" target="_blank">
+          <img src="https://i.ibb.co/48HqSnZ/kernel.png" alt="kernel" border="0">
+        </a>
+        <p>Или можно всё сделать одной комндой в терминале:</p>
+        <div class="code">
+          <code>sudo sed -i 's/installonly_limit=3/installonly_limit=2/' /etc/dnf/dnf.conf</code>
+        </div>
+        <h2 id="journal">Сокращение объема файла системного журнала</h2>
+        <p>По умолчанию в Linux Fedora не устанавливается ограничения на объем файла системного журнала. В том случае, если вы давно не переустанавливали систему и не устанавливали ограничений его объема самостоятельно, он может занимать достаточно много дискового пространства. Возможно, в случае сервера и разумно хранить как можно больше системных сообщений, но в случае обычной домашней системы будет вполне достаточно файла системного журнала объемом в 128МБ. Меняем настройки вручную, вводим в терминале:</p>
+        <div class="code">
+          <code>sudo gedit /etc/systemd/journald.conf</code>
+        </div>
+        <p>Ищем строчку <span class="monospace">#SystemMaxUse=</span>, удаляем решётку и дописывем <span class="monospace">128M</span>.</p>
+        <a href="https://i.ibb.co/d4SQKnX/journal.png" target="_blank">
+          <img src="https://i.ibb.co/d4SQKnX/journal.png" alt="journalctl" border="0">
+        </a>
+        <p>Но все эти действия можно сделать и одной командой:</p>
+        <div class="code">
+          <code>sudo journalctl --vacuum-size=128M</code>
+        </div>
+        <h2>Конец</h2>
+        <p>На этом безопасная очистка системы закончена. Надеюсь, вышеописанные методы хоть немного вам помогли. Основой послужила <a href="https://linux-faq.ru/page/kak-bezopasno-ochistit-fedora-workstation" target="_blank">данная статья</a>. Спасибо всем, кто читал! Можете как угодно использовать материал на этой странице, но буду признателен, если вы укажите ссылку при размещении на своих ресурсах.</p>
+      </article>
+    </main>
+    <footer class="footer">
+      <div class="contacts">
+        <p class="contacts__par">Если у вас есть вопросы или же вы нашли ошибку, опечатку, недостоверную информацию, можете написать на <a href="mailto:ivan.denu@bk.ru" title="ivan.denu@bk.ru">почту</a>.</p>
+      </div>
+      <div class="up">
+        <a class="up__button" href="#">Наверх</a>
+      </div>
+    </footer>
+  </div>
+  <!-- <script src="../scripts/main.js" charset="utf-8"></script> -->
+</body>
+</html>
