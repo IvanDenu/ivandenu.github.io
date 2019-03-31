@@ -49,6 +49,10 @@ time {
   color: #999;
 }
 
+.monospace {
+  font-family: 'Fira Mono', 'Ubuntu Mono', 'Roboto Mono', monospace;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -106,21 +110,28 @@ time {
 }
 
 .notes-list__item time {
-  font-size: 15px;
   vertical-align: middle;
+
+  font-size: 15px;
 }
 
-article header, article time, article h2, article p, article img, article ul, article .code {
-  margin-bottom: 15px;
-}
+/* --- Article --- */
 
 article header {
+  margin-bottom: 17px;
+  padding-bottom: 2px;
+
   border-bottom: 1px solid #ccc;
 }
 
+article time, article h2, article p, article img, article ul, article .code {
+  margin-bottom: 15px;
+}
+
 article h1 {
-  margin-bottom: 10px;
   margin-top: -10px;
+  margin-bottom: 10px;
+
   font-size: 26px;
   line-height: 1.3;
 }
@@ -152,23 +163,26 @@ article ul ul {
 }
 
 article .code {
-  font-size: 0.9em;
-  background: rgb(240,240,240);
+  overflow: auto;
+
   padding: 10px;
+
   border-radius: 5px;
+  background: rgb(240,240,240);
+
+  font-size: 0.9em;
 }
 
 article code {
   display: block;
+
+  white-space: nowrap;
+
   font-family: 'Fira Mono', 'Ubuntu Mono', 'Roboto Mono', monospace;
 }
 
 article img {
   padding: 5px 0;
-}
-
-.monospace {
-  font-family: 'Fira Mono', 'Ubuntu Mono', 'Roboto Mono', monospace;
 }
 
 
@@ -208,6 +222,7 @@ article img {
     align-items: flex-end;
     flex-direction: row;
     justify-content: space-between;
+
     padding-bottom: 32px;
   }
 
@@ -219,6 +234,6 @@ article img {
 
 @media (min-width: 1400px) {
   .wrapper {
-    max-width: 1250px;
+    /* max-width: 1250px; */
   }
 }
