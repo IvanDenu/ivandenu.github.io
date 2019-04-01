@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Как установить шрифты в Linux — Linux заметки — статьи по различным Linux-дистрибутивам</title>
+  <meta name="keywords" content="Ключевые слова, и, фразы, через, запятую">
+  <meta name="description" content="Описание контента страницы, 1-2 предложения.">
+  <link rel="shortcut icon" href="../images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../styles/style.css">
+  <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;subset=cyrillic" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Fira+Mono&amp;subset=cyrillic" rel="stylesheet">
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <header class="header">
+      <h1 class="home"><a href="../index.html">← Список всех статей</a></h1>
+    </header>
+
+    <main class="main">
+      <article class="note">
+        <header class="note-header">
+          <h1>Установка шрифтов в Linux</h1>
+          <time datetime="2019-04-01" pubdate>1 Апреля 2019</time>
+        </header>
+        <p>В этой заметке мы рассмотрим 2 способа установки шрифтов в Linux.</p>
+        <p>Для хранения шрифтов в Linux есть две основные папки: <span class="monospace">/usr/share/fonts</span> — для шрифтов, доступных всем пользователям, и <span class="monospace">~/.fonts</span> — для шрифтов, доступных только текущему пользователю. Самые популярные форматы шрифтов: TrueType Font (TTF, <span class="monospace">.ttf</span>) и OpenType Font (OTF, <span class="monospace">.otf</span>). Также поддерживается великое множество других форматов.</p>
+        <p>Для начала нужно скачать шрифт и, если он а архиве, разархивировать. Можно открыть файл шрифта через файловый менеджер, и откроется программа для управления шрифтами (например, <span class="monospace">gnome-font-viewer</span> в GNOME Shell), но при условии, что таковая имеется на устройстве. Дальше можно нажать кнопку "Установить", тогда шрифт автоматически установится.</p>
+        <a href="https://i.ibb.co/xFjw55K/gnome-font-viewer.png" target="_blank">
+          <img src="https://i.ibb.co/xFjw55K/gnome-font-viewer.png" alt="Установка шрифтов с помощью программы gnome-font-viewer" border="0">
+        </a>
+        <p>Если у вас в архиве не один файл шрифта(regular, bold, italic и т.д.), то проще установить шрифты через терминал. Перед установкой их нужно поместить в папку с общим названием, если при разархивировании это не сделалось. Для глобальной установки выполняем в терминале следующую команду:</p>
+        <div class="code">
+          <code>sudo cp -r ~/Downloads/Папка_со_шрифтами /usr/share/fonts</code>
+        </div>
+        <p>Для установки текущему пользователю сначала нужно создать папку <span class="monospace">.fonts</span>, если вы её ещё не создали:</p>
+        <div class="code">
+          <code>mkdir ~/.fonts</code>
+        </div>
+        <p>Устанавливаем шрифты:</p>
+        <div class="code">
+          <code>cp -r ~/Downloads/Папка_со_шрифтами ~/.fonts/</code>
+        </div>
+        <p>Теперь обновляем кеш шрифтов системы:</p>
+        <div class="code">
+          <code>fc-cache -f -v</code>
+        </div>
+        <h2>Конец</h2>
+        <p>На этом установка шрифтов закончена. Спасибо всем, кто читал! Можете как угодно использовать материал на этой странице, но буду признателен, если вы укажите ссылку при размещении на своих ресурсах.</p>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="contacts">
+        <p class="contacts__par">Если у вас есть вопросы или же вы нашли ошибку, опечатку, недостоверную информацию, можете написать на <a href="mailto:ivan.denu@bk.ru" title="ivan.denu@bk.ru">почту</a>.</p>
+      </div>
+      <div class="up">
+        <a class="up__button" href="#">Наверх</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- <script src="../scripts/main.js" charset="utf-8"></script> -->
+</body>
+</html>
